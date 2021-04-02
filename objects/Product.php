@@ -84,8 +84,8 @@ class Product {
 
     function deleteProduct($prod_id_IN) {
 
-        // KOlla om id är ifyllt
-        if (empty($_GET['id'])) {
+        // Kollar om id är ifyllt
+        if(empty($_GET['id'])) {
 
             $error = new stdClass();
             $error->message = "No id specified!";
@@ -163,6 +163,7 @@ class Product {
 
 
 
+    // funktion som endast fungerar vid aktiv och "valid" token
     function getAllProducts() {
 
         $sql = "SELECT * FROM products";
