@@ -1,0 +1,94 @@
+Code: 
+Message:
+Issue:
+
+// PRODUCTS //
+Error codes always starts with a O(zero) when it's about products. 
+
+
+// ADD PRODUCT // 
+
+Code: 0001
+Message: Could not execute your request!
+Issue: The api could not execute your request because...
+
+
+Code: 0002
+Message: The product is already registered!
+Issue: The product you're trying to add is already in the database. If you still want to add it, trying using a different title. Description and product can have the same content/names as previous products. 
+
+
+Code: 0003 
+Message: Could not create product, something must be wrong.
+Issue: The product could not be added (INSERT INTO) to the database. Could be because database is down or not existing. 
+
+Code: 0004
+Message: All arguments needs a value!
+Issue: You have forgotten to add values to all or either Product, Title or Description. Please add values to all parameters to add a product to the database.
+
+// DELETE PRODUCT // 
+
+Code: 0005 
+Message: The product id is not specified
+Issue: Try adding an id for the product you want to delete by writing "?id=xx" after the url: "../deleteProduct.php". 
+
+Code: 0006 
+Message: The id does not exist in the database!
+Issue: Try using an id that existin in the database. Go to "getAllProducts.php" to see all the existing products in the database. 
+
+// UPDATE PRODUCT // 
+
+Code: 0007
+Message: No id specified!
+Issue: Add an id from an existing product in the database. To see all "getAllProducts.php" to see all existing products in the database and their corresponding id number.
+
+Code: 0008 
+Message: No title specified!
+Issue: You have not added a title to your chosen id and product. Please add a title to update the product. 
+
+Code: 0009
+Message: No description specified!
+Issue: You have not added a description to your chosen id and product. Please add a description to update the product. 
+
+
+------------------------------------
+
+// USERS // 
+Error codes always starts with a 1(one) when it's about users. 
+
+
+// ADD USER // 
+
+Code: 1001 
+Message: Could not execute your request
+Issue: The api could not execute your request because it could not fetch the id or username from the database. 
+
+Code: 1002
+Message: The user is already registered!
+Issue: The user you're trying to register is already in the database, with either the same username and/or email. If you still want to add it, trying using a different username and/or email. Password can be the same as other user's. 
+
+Code: 1003 
+Message: Could not create user, something must be wrong!
+Issue: The user could not be added (INSERT INTO) to the database. Could be because database is down or not existing. 
+
+Code: 1004
+Message: You need to fill out all values, such as username, email and password.
+Issue: You have forgotten to add any content/information to all or either Username, Email or Password. Please add values to all parameters to register a user to the database.
+
+
+// LOGIN USER //
+
+Code: 1005
+Message: Username or password is either empty or wrong.
+Issue: You have written the wrong login information to either or both username and password. It could also be that you didn't fill out either or both username and password.
+
+-----------------------------------
+
+// CART // 
+Error codes always starts with a 2(two) when it's about the shopping cart. 
+
+
+// ADD TO CART // 
+
+
+
