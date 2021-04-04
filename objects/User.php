@@ -16,11 +16,12 @@ class User {
         $this->database_connection = $db;
     }
 
-
+    // Register user 
     function regUser($username_IN, $email_IN, $password_IN) {
 
         if(!empty($username_IN) && !empty($email_IN) && !empty($password_IN)) {
 
+            // checks for already existing username and email in database
             $sql = "SELECT id FROM users WHERE username = :username_IN or email = :email_IN";
             $statement = $this->database_connection->prepare($sql);
             $statement->bindParam(":username_IN", $username_IN);
@@ -36,6 +37,7 @@ class User {
 
             }
 
+                // counts rows in database and checks if it's more than zero            
                 $count_rows = $statement->rowCount();
                 if($count_rows > 0) { 
 
@@ -47,6 +49,7 @@ class User {
         
                 }
 
+                    // Adds new user to database with encrypted password
                     $sql = "INSERT INTO users (username, email, password) VALUES(:username_IN, :email_IN, :password_IN)";
                     $statement = $this->database_connection->prepare($sql);
                     $statement->bindParam(":username_IN", $username_IN);
@@ -82,7 +85,7 @@ class User {
     }
 
 
-
+    // Login user to API
     function loginUser($username_IN, $password_IN) {
 
         if(!empty($username_IN) || !empty($password_IN) ) {
@@ -94,13 +97,16 @@ class User {
 
             $statement->execute();
 
-            // om användaren skriver rätt username och password och finns på en rad i db
+            // if the user types the right username and password and the data exists in one row in the db
             if($statement->rowCount() == 1) {
 
-                echo  " You successfully loggedin! <br><br>";
+                $message = new stdClass();
+                $message->message = "You successfully loggedin!";
+                print_r(json_encode($message));
+                echo "<br><br>";
         
                 $row = $statement->fetch();
-                return $this->createToken($row['id'], $row['username']); // skapar en ny token
+                return $this->createToken($row['id'], $row['username']); // creates a token
              
                 
             } else {
@@ -117,21 +123,20 @@ class User {
     }
 
 
-    // skapa och checka token/session // ADDERA _IN
+    // Create and checks token 
     function createToken($id, $username) {
 
-        // kollar om token (i checkToken) är false, om inte kör den vidare. 
-        $checked_token =  $this->checkToken($id);                        // hämtar en redan aktiv token, istället för att skapa ny hela tiden
+        // Checks if token (in checkToken) is false, if not it continutes below
+        $checked_token =  $this->checkToken($id);                        // fetches an already existing token, instead of creating a new every time
 
-        // returnerar en aktiv token, som inte är "false"
+        // returns an active token, that's not false
         if($checked_token != false) {
             return $checked_token;
         }
 
 
-        // skapar en ny token ifall koden ovan inte hittade en aktiv token
-
-        $token = md5(time() . $id . $username);                          // md5 ger en unik token med tid, id och username
+        // creates a new token if the code above does not find an active token 
+        $token = md5(time() . $id . $username);                          // md5 creates an unique token with time stamp, id and username 
 
         
         $sql  ="INSERT INTO sessions (user_id, token, last_used) VALUES(:user_id_IN, :token_IN, :last_used_IN)";
@@ -152,7 +157,7 @@ class User {
         $sql = "SELECT token, last_used FROM sessions WHERE user_id=:user_id_IN AND last_used > :active_time_IN LIMIT 1";
         $statement = $this->database_connection->prepare($sql);
         $statement->bindParam(":user_id_IN", $id);
-        $active_time = time() - (60*60);                                 // sätter den aktiva tiden på en timme (60s x 60s)
+        $active_time = time() - (60*60);                                 // token is active in one hour (60s x 60s)
         $statement->bindParam(":active_time_IN", $active_time);
 
         $statement->execute();
@@ -170,37 +175,6 @@ class User {
 
     }
 
-
-    // finns även i Product.php, ev ta bort denna, ej "aktiverad" funktion 
-    function UpdateToken($token) {
-
-        $sql = "UPDATE sessions SET last_used=:last_used_IN WHERE token=:token_IN";
-        $statement = $this->database_connection->prepare($sql);
-        $time = time();
-        $statement->bindParam(":last_used_IN", $time);
-        $statement->bindParam(":token_IN", $token);
-        $statement->execute();
-
-    }
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// sista klammern i class User
 }
 
 

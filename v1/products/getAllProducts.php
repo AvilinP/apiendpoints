@@ -19,7 +19,7 @@
     if($product->isTokenValid($token)) {
 
        $post = $product->getAllProducts();
-       print_r(json_encode($post));
+       print_r($post);
        die();
 
     } else {

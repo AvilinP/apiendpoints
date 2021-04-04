@@ -9,7 +9,7 @@
 
     $user = new User($pdo);
 
-    // return endast om fälten är ifyllda korrekt 
+    // return only if the required fields are correct 
     $return = new stdClass();
     $return->token = $user->loginUser($username, $password);
     print_r(json_encode($return));
