@@ -3,38 +3,51 @@
     include("../../objects/Cart.php");
 
     $token = "";
+
     if(isset($_GET['token'])) {
 
         $token = $_GET['token'];
 
     } else {
 
-        echo "FAIL - no token written!";
+        $error = new stdClass();
+        $error->message = "There is no token written!";
+        $error->code = "2002";
+        print_r(json_encode($error));
         die();
     }
 
     $cart = new Cart($pdo); 
 
-    // kollar om det finns en valid token innan produkten läggs i cart
+    // Checks if there's a valid token before the product is added to the cart
     if($cart->isTokenValid($token)) {
 
         if(!isset($_GET['product_id'])) {
 
-            echo "Please specify a product id";
+            $error = new stdClass();
+            $error->message = "Please specify a product id";
+            $error->code = "2003";
+            print_r(json_encode($error));
+            die();
         
         } else {
                      
             $cart->addToCart($_GET['product_id'], $_GET['token']); 
-            echo "Product added to cart";
+            $message = new stdClass();
+            $message->message = "Product added to cart";
+            print_r(json_encode($message));
+            die();
           
         }
 
     } else {
 
-        echo "No valid token";
+        $error = new stdClass();
+        $error->message = "No valid token";
+        $error->code = "2004";
+        print_r(json_encode($error));
+        die();
 
     }
 
-
-
-    ?>
+?>

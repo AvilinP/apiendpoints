@@ -17,7 +17,7 @@ class Cart {
 
     function addToCart($prod_id_IN, $token) {
 
-        //kolla om produkt-id finns i tabellen products (får felmeddelande)
+        // Checks if the product id exists in db products
         if(!empty($prod_id_IN)) {
 
             $sql = "SELECT id FROM products WHERE id = :prod_id_IN";
@@ -26,7 +26,11 @@ class Cart {
             $statement->execute();
 
             if($statement->rowCount() == 0) {
-                echo "the product does not exist in database";
+                $error = new stdClass();
+                $error->message = "The product does not exist in database!";
+                $error->code = "2001";
+                print_r(json_encode($error));
+                die();
             }
         
         }
@@ -42,13 +46,13 @@ class Cart {
 
 
 
-    // Finns även i User.php (kollar id) och Product.php (kollar token)
+    // Checks if the token is valid
     function isTokenValid($token) {
 
         $sql = "SELECT token, last_used FROM sessions WHERE token=:token_IN AND last_used > :active_time_IN LIMIT 1";
         $statement = $this->database_connection->prepare($sql);
         $statement->bindParam(":token_IN", $token);
-        $active_time = time() - (60*60);                                 // sätter den aktiva tiden på en timme (60s x 60s)
+        $active_time = time() - (60*60);                                 // token is active for one hour (60s x 60s)
         $statement->bindParam(":active_time_IN", $active_time);
 
         $statement->execute();
@@ -56,7 +60,7 @@ class Cart {
 
         if(isset($return['token'])) {
 
-            // Uppdaterar tiden om token är giltig. Uppdatera user automatiskt under tiden hen är aktiv. Sedan sätts 60 min token. 
+            // Updates the valid time for token. Updates user automagically during their active time on website, adds another 60 minutes to the time. 
             $this->UpdateToken($return['token']);
             
             return true;
@@ -67,12 +71,11 @@ class Cart {
 
         }
 
-
-
-
     }
 
-    // Finns även i User.php och Product.php
+
+
+    // Connected to isTokenValid - updates the time for token if user is active for longer
     function UpdateToken($token) {
 
         $sql = "UPDATE sessions SET last_used=:last_used_IN WHERE token=:token_IN";
@@ -85,11 +88,15 @@ class Cart {
     }
 
 
+    // Deletes product from cart
     function deleteFromCart($prod_id_IN) {
 
         if(empty($_GET['id'])) {
 
-            echo "fail!";
+            $error = new stdClass();
+            $error->message = "Id is not specified";
+            $error->code = "2002";
+            print_r(json_encode($error));
             die();
         }
 
@@ -124,15 +131,9 @@ class Cart {
 
         } 
 
-
-
-
     }
-
-
-
 
 
 }
 
-    ?>
+?>
