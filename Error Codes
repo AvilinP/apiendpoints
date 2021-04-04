@@ -119,6 +119,21 @@ Issue: The token you have submitted in the url is not valid. Try using a valid t
 
 Code: 2005
 Message: Id is not specified!
-Issue: You have not specified an id in the url. Try adding a valid id after "../deleteFromCart.php?id=xx" by changing the x's for you chosen id. 
+Issue: You have not specified an id in the url. Try adding a valid id after "../deleteFromCart.php?id=xx" by changing the x's for you chosen id. Please use the cart id, not the product id. 
 
 
+Code: 2006 
+Message: The id does not exist in the database!
+Issue: The product you're trying to delete frm the cart does not exist in the database (table cart). Try using an id from an product that exists in the cart.
+
+Code: 2007
+Message: There is no token written!
+Issue: Please add a valid token to the url. 
+
+Code: 2008
+Message: Please specify an id
+Issue: You have not specify an id for the product you want to delete from the cart in the url. Remember to use the cart id, not the product id. 
+
+Code: 2009
+Message: No valid token
+Issue: You have not used a valid token together with your id. Please use a valid token by login in again.

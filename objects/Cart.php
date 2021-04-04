@@ -15,6 +15,7 @@ class Cart {
     }
 
 
+    // Add product to cart if you have a valid token
     function addToCart($prod_id_IN, $token) {
 
         // Checks if the product id exists in db products
@@ -45,6 +46,46 @@ class Cart {
     }
 
 
+    // Deletes product from cart if you have a valid token
+    function deleteFromCart($prod_id_IN, $token) {
+
+        if(empty($_GET['id'])) {
+
+            $error = new stdClass();
+            $error->message = "Id is not specified";
+            $error->code = "2005";
+            print_r(json_encode($error));
+            die();
+        }
+
+
+        if(!empty($_GET['id'])) {
+
+            $sql = "SELECT id FROM cart WHERE id = :prod_id_IN";
+            $statement = $this->database_connection->prepare($sql);
+            $statement->bindParam(":prod_id_IN", $prod_id_IN);
+
+            $statement->execute();
+
+            if($statement->rowCount() == 0) {
+
+                $error = new stdClass();
+                $error->message = "The id does not exist in the database!";
+                $error->code = "2006";
+                print_r(json_encode($error));
+                die();
+
+            }
+
+            $sql ="DELETE FROM cart WHERE id=:prod_id_IN";
+            $statement = $this->database_connection->prepare($sql);
+            $statement->bindParam(":prod_id_IN", $prod_id_IN);
+            $statement->execute();
+
+        
+        } 
+
+    }
 
     // Checks if the token is valid
     function isTokenValid($token) {
@@ -87,51 +128,6 @@ class Cart {
         
     }
 
-
-    // Deletes product from cart
-    function deleteFromCart($prod_id_IN) {
-
-        if(empty($_GET['id'])) {
-
-            $error = new stdClass();
-            $error->message = "Id is not specified";
-            $error->code = "2002";
-            print_r(json_encode($error));
-            die();
-        }
-
-
-        if(!empty($_GET['id'])) {
-
-            $sql = "SELECT id FROM cart WHERE id = :prod_id_IN";
-            $statement = $this->database_connection->prepare($sql);
-            $statement->bindParam(":prod_id_IN", $prod_id_IN);
-
-            $statement->execute();
-
-            if($statement->rowCount() == 0) {
-
-                $error = new stdClass();
-                $error->message = "The id does not exist in the database!";
-                $error->code = "2006";
-                print_r(json_encode($error));
-                die();
-
-            }
-
-            $sql ="DELETE FROM cart WHERE id=:prod_id_IN";
-            $statement = $this->database_connection->prepare($sql);
-            $statement->bindParam(":prod_id_IN", $prod_id_IN);
-            $statement->execute();
-
-            $message = new stdClass();
-            $message->message = "Successfully deleted product in cart!";
-            print_r(json_encode($message));
-        
-
-        } 
-
-    }
 
 
 }
