@@ -31,4 +31,8 @@ if (empty($_GET['description'])) {
     $post = new Product($pdo);
     $post->updateProduct($_GET['id'], $_GET['title'], $_GET['description']);
 
+    $message = new stdClass();
+    $message->message = "Successfully updated product in database!";
+    print_r(json_encode($message));
+
     ?>

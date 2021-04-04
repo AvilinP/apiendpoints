@@ -9,8 +9,12 @@
 
     } else {
 
-        echo "FAIL!";
+        $error = new stdClass();
+        $error->message = "You have not specified a token!";
+        $error->code = "0010";
+        print_r(json_encode($error));
         die();
+
     }
 
     $product = new Product($pdo);
@@ -24,11 +28,12 @@
 
     } else {
         
-        echo "ERROR!";
+        $error = new stdClass();
+        $error->message = "Your token is not valid!";
+        $error->code = "0011";
+        print_r(json_encode($error));
+        die();
     }
    
 
-
-    
-
-    ?>
+?>

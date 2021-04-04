@@ -21,7 +21,7 @@ class User {
 
         if(!empty($username_IN) && !empty($email_IN) && !empty($password_IN)) {
 
-            // checks for already existing username and email in database
+            // checks for already existing username and email in db
             $sql = "SELECT id FROM users WHERE username = :username_IN or email = :email_IN";
             $statement = $this->database_connection->prepare($sql);
             $statement->bindParam(":username_IN", $username_IN);
@@ -37,7 +37,7 @@ class User {
 
             }
 
-                // counts rows in database and checks if it's more than zero            
+                // counts rows in db and checks if it's more than zero            
                 $count_rows = $statement->rowCount();
                 if($count_rows > 0) { 
 
@@ -49,7 +49,7 @@ class User {
         
                 }
 
-                    // Adds new user to database with encrypted password
+                    // Adds new user to db with encrypted password
                     $sql = "INSERT INTO users (username, email, password) VALUES(:username_IN, :email_IN, :password_IN)";
                     $statement = $this->database_connection->prepare($sql);
                     $statement->bindParam(":username_IN", $username_IN);
@@ -157,7 +157,7 @@ class User {
         $sql = "SELECT token, last_used FROM sessions WHERE user_id=:user_id_IN AND last_used > :active_time_IN LIMIT 1";
         $statement = $this->database_connection->prepare($sql);
         $statement->bindParam(":user_id_IN", $id);
-        $active_time = time() - (60*60);                                 // token is active in one hour (60s x 60s)
+        $active_time = time() - (60*60);                                 // token is active for one hour (60s x 60s)
         $statement->bindParam(":active_time_IN", $active_time);
 
         $statement->execute();
@@ -176,28 +176,6 @@ class User {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ?>

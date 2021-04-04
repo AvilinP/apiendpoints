@@ -16,10 +16,12 @@ class Product {
     }
 
 
+    // Adds product to db
     function addProduct($product_IN, $title_IN, $description_IN) {
 
         if(!empty($product_IN) && !empty($title_IN) && !empty($description_IN)) {
 
+            // checks for already existing product in db based on title
             $sql = "SELECT id FROM products WHERE title = :title_IN";
             $statement = $this->database_connection->prepare($sql);
             $statement->bindParam(":title_IN", $title_IN); 
@@ -35,6 +37,7 @@ class Product {
 
             }
 
+            // counts rows in db and checks if it's more than zero 
             $num_rows = $statement->rowCount();
             if($num_rows > 0) {
 
@@ -46,6 +49,7 @@ class Product {
 
             }
 
+            // Adds product to db
             $sql = "INSERT INTO products (product, title, description) VALUES(:product_IN, :title_IN, :description_IN)";
             $statement = $this->database_connection->prepare($sql);
             $statement->bindParam(":product_IN", $product_IN);
@@ -65,7 +69,9 @@ class Product {
             $this->product = $product_IN;
             $this->title = $title_IN;
 
-            echo "Product '$this->product' with title '$this->title' is now added to the database.";
+            $message = new stdClass();
+            $message->message = "Product '$this->product' with title '$this->title' is now added to the database.";
+            print_r(json_encode($message));
             die();
 
                 } else {
@@ -81,10 +87,10 @@ class Product {
     }
 
 
-
+    // Delete product in db
     function deleteProduct($prod_id_IN) {
 
-        // Kollar om id är ifyllt
+        // Checks if id is declared 
         if(empty($_GET['id'])) {
 
             $error = new stdClass();
@@ -96,7 +102,7 @@ class Product {
         } 
 
 
-        // Kollar om id finns i databasen
+        // Checks if the id exists in db
         if(!empty($_GET['id'])) {
 
             $sql = "SELECT id FROM products WHERE id = :prod_id_IN";
@@ -129,7 +135,7 @@ class Product {
 
     }
 
-    
+    // Update product's title and description
     function updateProduct($prod_id_IN, $title_IN = "", $description_IN = "") {
 
         if(!empty($title_IN)) {
@@ -143,6 +149,7 @@ class Product {
     }
 
     private function updateTitle($prod_id_IN, $title_IN) {
+
         $sql = "UPDATE products SET title = :title_IN WHERE id = :prod_id_IN";
         $statement = $this->database_connection->prepare($sql);
         $statement->bindParam(":title_IN", $title_IN);
@@ -163,27 +170,27 @@ class Product {
 
 
 
-    // funktion som endast fungerar vid aktiv och "valid" token
+    // Shows all products in db and only works with active and valid token
     function getAllProducts() {
 
         $sql = "SELECT * FROM products";
         $statement = $this->database_connection->prepare($sql);
         $statement->execute();
 
-        // ej formaterat snyggt
+        // needs to be in formation (Where is Bey when we need her??) 
         echo json_encode($statement->fetchAll());
        
 
     }
 
 
-     // samma som i User.php men kollar token istället för id
+     // Checks if token is valid 
      function isTokenValid($token) {
 
         $sql = "SELECT token, last_used FROM sessions WHERE token=:token_IN AND last_used > :active_time_IN LIMIT 1";
         $statement = $this->database_connection->prepare($sql);
         $statement->bindParam(":token_IN", $token);
-        $active_time = time() - (60*60);                                 // sätter den aktiva tiden på en timme (60s x 60s)
+        $active_time = time() - (60*60);                                 //token is active for one hour (60s x 60s)
         $statement->bindParam(":active_time_IN", $active_time);
 
         $statement->execute();
@@ -191,7 +198,7 @@ class Product {
 
         if(isset($return['token'])) {
 
-            // Uppdaterar tiden om token är giltig. Uppdatera user automatiskt under tiden hen är aktiv. Sedan sätts 60 min token. 
+            // Updates the valid time for token. Updates user automagically during their active time on website, adds another 60 minutes to the time.
             $this->UpdateToken($return['token']);
             
             return true;
@@ -202,12 +209,10 @@ class Product {
 
         }
 
-
-
-
     }
 
-    // Finns även i User.php, men endast aktiverad funktion ovan
+
+    // Connected to isTokenValid - updates the time for token if user is active for longer
     function UpdateToken($token) {
 
         $sql = "UPDATE sessions SET last_used=:last_used_IN WHERE token=:token_IN";
@@ -220,11 +225,6 @@ class Product {
     }
 
 
-
-
-
-
-// sista klammern i class Product
 }
 
 

@@ -10,13 +10,11 @@ Error codes always starts with a O(zero) when it's about products.
 
 Code: 0001
 Message: Could not execute your request!
-Issue: The api could not execute your request because...
-
+Issue: The api could not execute your request because it could not fetch the id or username from the database.
 
 Code: 0002
 Message: The product is already registered!
 Issue: The product you're trying to add is already in the database. If you still want to add it, trying using a different title. Description and product can have the same content/names as previous products. 
-
 
 Code: 0003 
 Message: Could not create product, something must be wrong.
@@ -26,6 +24,7 @@ Code: 0004
 Message: All arguments needs a value!
 Issue: You have forgotten to add values to all or either Product, Title or Description. Please add values to all parameters to add a product to the database.
 
+
 // DELETE PRODUCT // 
 
 Code: 0005 
@@ -34,13 +33,14 @@ Issue: Try adding an id for the product you want to delete by writing "?id=xx" a
 
 Code: 0006 
 Message: The id does not exist in the database!
-Issue: Try using an id that existin in the database. Go to "getAllProducts.php" to see all the existing products in the database. 
+Issue: Try using an id that exists in the database. Go to "..products/getAllProducts.php" and add your token from login to see all the existing products in the database. 
+
 
 // UPDATE PRODUCT // 
 
 Code: 0007
 Message: No id specified!
-Issue: Add an id from an existing product in the database. To see all "getAllProducts.php" to see all existing products in the database and their corresponding id number.
+Issue: Add an id from an existing product in the database. To see all go to "../products/getAllProducts.php" with your valid token to see all existing products in the database and their corresponding id number.
 
 Code: 0008 
 Message: No title specified!
@@ -49,6 +49,17 @@ Issue: You have not added a title to your chosen id and product. Please add a ti
 Code: 0009
 Message: No description specified!
 Issue: You have not added a description to your chosen id and product. Please add a description to update the product. 
+
+
+// GET ALL PRODUCTS // 
+
+Code: 0010
+Message: You have not specified a token!
+Issue: You need to specify your (valid) token in the url. Write "?token=xxxxxx" where you change the x's for your token from login. 
+
+Code: 0011
+Message: Your token is not valid!
+Issue: THe token you have specified is not valid. Double check your token from login and try agin.
 
 
 ------------------------------------
