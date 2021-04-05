@@ -1,8 +1,6 @@
 # apiendpoints
 API endpoint built with PHP.
 
----
-
 
 ## Installation
 
@@ -17,5 +15,3 @@ CREATE TABLE products (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, date DATETIME
 CREATE TABLE sessions (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, user_id INT NOT NULL, token TEXT NOT NULL, last_used INT NOT NULL, CONSTRAINT sessions_ibfk_1 FOREIGN KEY(user_id) REFERENCES users(id)) ENGINE = InnoDB;
 
 CREATE TABLE cart (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, product_id INT NOT NULL, token TEXT NOT NULL, date DATETIME NOT NULL DEFAULT current_timestamp, CONSTRAINT cart_ibfk_1 FOREIGN KEY(product_id) REFERENCES products(id)) ENGINE = InnoDB;
-
----
