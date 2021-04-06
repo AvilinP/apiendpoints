@@ -103,7 +103,6 @@ class User {
                 $message = new stdClass();
                 $message->message = "You successfully loggedin!";
                 print_r(json_encode($message));
-                echo "<br><br>";
         
                 $row = $statement->fetch();
                 return $this->createToken($row['id'], $row['username']); // creates a token
