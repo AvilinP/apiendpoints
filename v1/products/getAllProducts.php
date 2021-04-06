@@ -2,6 +2,7 @@
     include("../../includes/db.php");
     include("../../objects/Product.php");
 
+
     $token = "";
     if(isset($_GET['token'])) {
 

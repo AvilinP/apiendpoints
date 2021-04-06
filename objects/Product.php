@@ -1,5 +1,6 @@
 <?php
 
+
 class Product {
 
     private $database_connection; 

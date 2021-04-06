@@ -1,6 +1,6 @@
 <?php
 
-// header('Content-type: application/json;charset=UTF-8');
+header('Content-Type: application/json');
 
 $dsn = "mysql:host=localhost;dbname=ecommerce";
 $user = "root";
