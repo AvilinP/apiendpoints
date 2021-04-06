@@ -177,8 +177,7 @@ class Product {
         $sql = "SELECT * FROM products";
         $statement = $this->database_connection->prepare($sql);
         $statement->execute();
-
-        // needs to be in formation (Where is Bey when we need her??) 
+ 
         echo json_encode($statement->fetchAll());
        
 
